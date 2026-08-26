@@ -5,4 +5,7 @@
     <Project Path="ECommerceApp.Domain/ECommerceApp.Domain.csproj" />
     <Project Path="ECommerceApp.Infrastructure/ECommerceApp.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ECommerceApp.ArchitectureTests/ECommerceApp.ArchitectureTests.csproj" />
+  </Folder>
 </Solution>

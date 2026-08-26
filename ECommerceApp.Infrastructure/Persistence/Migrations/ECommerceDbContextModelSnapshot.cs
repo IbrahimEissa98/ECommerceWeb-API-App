@@ -75,7 +75,7 @@ namespace ECommerceApp.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("Products", t =>
+                    b.ToTable("Products", null, t =>
                         {
                             t.HasCheckConstraint("CHK_ProductPrice", "Price > 0");
                         });
@@ -111,7 +111,7 @@ namespace ECommerceApp.Infrastructure.Persistence.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Brands");
+                    b.ToTable("Brands", (string)null);
                 });
 
             modelBuilder.Entity("ECommerceApp.Domain.Entities.ProductType", b =>
@@ -144,7 +144,7 @@ namespace ECommerceApp.Infrastructure.Persistence.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Types");
+                    b.ToTable("Types", (string)null);
                 });
 
             modelBuilder.Entity("ECommerceApp.Domain.Entities.Product", b =>

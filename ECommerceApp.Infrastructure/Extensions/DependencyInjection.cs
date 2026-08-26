@@ -1,5 +1,6 @@
 ﻿using ECommerceApp.Infrastructure.Persistence.Contexts;
 using ECommerceApp.Infrastructure.Persistence.Interceptors;
+using ECommerceApp.Infrastructure.Persistence.Seeding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,12 @@ public static class DependencyInjection
             options.LogTo(Console.WriteLine, LogLevel.Information);
             options.AddInterceptors(sp.GetRequiredService<TimestampInterceptor>());
         });
+
+        services.AddScoped<IDataSeeder, ProductBrandSeeder>();
+        services.AddScoped<IDataSeeder, ProductTypeSeeder>();
+        services.AddScoped<IDataSeeder, ProductSeeder>();
+
+        services.AddScoped<DatabaseSeeder>();
 
         return services;
     }
