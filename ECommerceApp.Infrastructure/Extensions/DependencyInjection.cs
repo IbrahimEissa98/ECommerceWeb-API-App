@@ -1,6 +1,8 @@
-﻿using ECommerceApp.Infrastructure.Persistence.Contexts;
+﻿using ECommerceApp.Domain.Repositories;
+using ECommerceApp.Infrastructure.Persistence.Contexts;
 using ECommerceApp.Infrastructure.Persistence.Interceptors;
 using ECommerceApp.Infrastructure.Persistence.Seeding;
+using ECommerceApp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,8 +28,10 @@ public static class DependencyInjection
         services.AddScoped<IDataSeeder, ProductBrandSeeder>();
         services.AddScoped<IDataSeeder, ProductTypeSeeder>();
         services.AddScoped<IDataSeeder, ProductSeeder>();
-
         services.AddScoped<DatabaseSeeder>();
+
+        services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

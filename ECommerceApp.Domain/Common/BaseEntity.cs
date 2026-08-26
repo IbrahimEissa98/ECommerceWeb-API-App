@@ -2,7 +2,7 @@
 
 public class BaseEntity<PKType> : IHasTimeStamp where PKType : struct
 {
-    public PKType Id { get; protected set; } = default!;
+    public PKType Id { get; protected set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
     public DateTimeOffset? DeletedAt { get; set; }
