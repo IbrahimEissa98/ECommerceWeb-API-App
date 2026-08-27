@@ -11,6 +11,8 @@ builder.Services.AddDIForApplication();
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
+
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 
