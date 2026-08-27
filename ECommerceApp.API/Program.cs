@@ -16,6 +16,17 @@ app.UseExceptionHandler();
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 
+//if (app.Environment.IsDevelopment())
+//{
+//    app.MapOpenApi();
+
+//    // Add this
+//    app.UseSwaggerUI(options =>
+//    {
+//        options.SwaggerEndpoint("/openapi/v1.json", "API v2");
+//    });
+//}
+
 app.UseAuthorization();
 
 app.MapControllers();
