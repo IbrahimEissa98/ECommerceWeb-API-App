@@ -10,10 +10,40 @@ public class ProductType : BaseEntity<int>
 
     private ProductType() { }
 
-    public static ProductType Create(string name)
+    public static Result<ProductType> Create(string name)
     {
-        ArgumentNullException.ThrowIfNullOrWhiteSpace(name);
+        var productType = new ProductType();
 
-        return new() { Name = name.Trim() };
+        var nameResult = productType.SetName(name);
+        if (nameResult.IsFailure)
+            return Result<ProductType>.Failure(nameResult.Error!);
+
+        return Result<ProductType>.Success(productType);
+    }
+
+    private Result SetName(string name)
+    {
+        var result = ValidateName(name);
+
+        if (result.IsFailure)
+            return result;
+
+        Name = name.Trim();
+
+        return Result.Success();
+    }
+
+    private static Result ValidateName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return Result.Failure(Error.Validation("ProductType.Name.Required",
+                "Product type name is required"));
+
+        if (name.Trim().Length > 100)
+            return Result.Failure(
+                Error.Validation("ProductType.Name.TooLong",
+                "Product type name cannot exceed 100 characters."));
+
+        return Result.Success();
     }
 }

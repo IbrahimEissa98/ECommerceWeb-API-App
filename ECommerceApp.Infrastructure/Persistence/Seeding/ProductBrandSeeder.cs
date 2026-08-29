@@ -14,7 +14,7 @@ public class ProductBrandSeeder(ECommerceDbContext dbContext) : IDataSeeder
         => await JsonSeeder.SeedIfEmptyAsync<ProductBrand, ProductBrandSeedModel>(
             _dbContext.Brands,
             "brands.json",
-            m => ProductBrand.Create(m.Name),
+            m => (ProductBrand.Create(m.Name)).Value!,
             ct
             );
 }

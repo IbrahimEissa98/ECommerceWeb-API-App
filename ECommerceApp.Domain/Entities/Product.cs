@@ -21,17 +21,17 @@ public class Product : BaseEntity<Guid>
     private const int PictureUrlMaxLength = 200;
 
     private Product() { }
-    private Product(string name, string description, string pictureUrl,
-                    decimal price, int brandId, int typeId)
-    {
-        SetId(Guid.NewGuid());
-        SetName(name);
-        SetDescription(description);
-        SetPictureUrl(pictureUrl);
-        SetPrice(price);
-        SetBrandId(brandId);
-        SetTypeId(typeId);
-    }
+    //private Product(string name, string description, string pictureUrl,
+    //                decimal price, int brandId, int typeId)
+    //{
+    //    SetId(Guid.NewGuid());
+    //    SetName(name);
+    //    SetDescription(description);
+    //    SetPictureUrl(pictureUrl);
+    //    SetPrice(price);
+    //    SetBrandId(brandId);
+    //    SetTypeId(typeId);
+    //}
 
     public static Result<Product> Create(
         string name,
@@ -41,38 +41,35 @@ public class Product : BaseEntity<Guid>
         int brandId,
         int typeId)
     {
-        var nameResult = ValidateName(name);
+        var product = new Product();
+
+        product.SetId(Guid.NewGuid());
+
+        var nameResult = product.SetName(name);
         if (nameResult.IsFailure)
             return Result<Product>.Failure(nameResult.Error!);
 
-        var descriptionResult = ValidateDescription(description);
+        var descriptionResult = product.SetDescription(description);
         if (descriptionResult.IsFailure)
             return Result<Product>.Failure(descriptionResult.Error!);
 
-        var pictureUrlResult = ValidatePictureUrl(pictureUrl);
+        var pictureUrlResult = product.SetPictureUrl(pictureUrl);
         if (pictureUrlResult.IsFailure)
             return Result<Product>.Failure(pictureUrlResult.Error!);
 
-        var priceResult = ValidatePrice(price);
+        var priceResult = product.SetPrice(price);
         if (priceResult.IsFailure)
             return Result<Product>.Failure(priceResult.Error!);
 
-        var brandResult = ValidateBrandId(brandId);
+        var brandResult = product.SetBrandId(brandId);
         if (brandResult.IsFailure)
             return Result<Product>.Failure(brandResult.Error!);
 
-        var typeResult = ValidateTypeId(typeId);
+        var typeResult = product.SetTypeId(typeId);
         if (typeResult.IsFailure)
             return Result<Product>.Failure(typeResult.Error!);
 
-        return Result<Product>.Success(
-            new Product(
-                name.Trim(),
-                description.Trim(),
-                pictureUrl.Trim(),
-                decimal.Round(price, 2, MidpointRounding.AwayFromZero),
-                brandId,
-                typeId));
+        return Result<Product>.Success(product);
     }
 
     public Result Update(
