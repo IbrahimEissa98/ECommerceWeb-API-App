@@ -1,6 +1,10 @@
-﻿using ECommerceApp.Domain.Repositories;
+﻿using ECommerceApp.Application.ProductBrands;
+using ECommerceApp.Application.Products;
+using ECommerceApp.Application.ProductTypes;
+using ECommerceApp.Domain.Repositories;
 using ECommerceApp.Infrastructure.Persistence.Contexts;
 using ECommerceApp.Infrastructure.Persistence.Interceptors;
+using ECommerceApp.Infrastructure.Persistence.Queries;
 using ECommerceApp.Infrastructure.Persistence.Seeding;
 using ECommerceApp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +36,10 @@ public static class DependencyInjection
 
         services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+        services.AddScoped<IProductQueryService, ProductQueryService>();
+        services.AddScoped<IProductBrandQueryService, ProductBrandQueryService>();
+        services.AddScoped<IProductTypeQueryService, ProductTypeQueryService>();
 
         return services;
     }
