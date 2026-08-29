@@ -22,22 +22,35 @@ public class Result
 
     public static Result Failure(Error error)
         => new(false, error);
+
+    public static implicit operator Result(Error error) => Failure(error);
 }
 
 
 public sealed class Result<TValue> : Result
 {
-    public TValue? Value { get; }
+    private readonly TValue? _value;
 
     private Result(TValue? value, bool isSuccess, Error? error = null)
         : base(isSuccess, error)
     {
-        Value = value;
+        _value = value;
     }
+
+    public TValue Value => IsSuccess ? _value! : throw new InvalidOperationException("Cannot access the value of failed result.");
 
     public static Result<TValue> Success(TValue value)
         => new(value, true);
 
     public static new Result<TValue> Failure(Error error)
         => new(default, false, error);
+
+    public TResult Match<TResult>(Func<TValue, TResult> onSuccess, Func<Error, TResult> onError)
+        => IsSuccess ? onSuccess(Value!) : onError(Error!);
+
+    public static implicit operator Result<TValue>(TValue value)
+        => Success(value);
+
+    public static implicit operator Result<TValue>(Error error)
+        => Failure(error);
 }
