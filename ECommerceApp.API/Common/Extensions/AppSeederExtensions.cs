@@ -2,7 +2,7 @@
 using ECommerceApp.Infrastructure.Persistence.Seeding;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECommerceApp.API.Extensions;
+namespace ECommerceApp.API.Common.Extensions;
 
 public static class AppSeederExtensions
 {

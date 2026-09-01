@@ -1,7 +1,8 @@
-using ECommerceApp.API.Endpoints;
-using ECommerceApp.API.Extensions;
+using ECommerceApp.API.Common.Extensions;
 using ECommerceApp.Application.Extensions;
 using ECommerceApp.Infrastructure.Extensions;
+using Microsoft.OpenApi;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDIForApi();
 builder.Services.AddDIForInfrastructure(builder.Configuration);
 builder.Services.AddDIForApplication(builder.Configuration);
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+        // Enable XML comments if using them for descriptions
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+        c.IncludeXmlComments(xmlPath);
+    });
+}
 
 var app = builder.Build();
 
@@ -27,10 +40,9 @@ await app.SeedDatabaseAsync();
 
 if (app.Environment.IsDevelopment())
 {
-    // Add this
     app.UseSwaggerUI(options =>
     {
-        // We reverse the list of API versions so the newest version is rendered first
+        // reverse the list of API versions so the newest version is rendered first
         foreach (var description in app.DescribeApiVersions().Reverse())
         {
             options.SwaggerEndpoint(
@@ -40,6 +52,6 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.MapProductEndpoints();
+//app.MapProductEndpoints();
 
 app.Run();

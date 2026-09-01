@@ -7,6 +7,9 @@ public static class ProductErrors
     public static readonly Error NotFound =
         Error.NotFound("Product.NotFound", "Product was not found.");
 
+    public static readonly Error InvalidId =
+        Error.Validation("Product.InvalidId", "Invalid product Id");
+
     public static readonly Error NameRequired =
         Error.Validation("Product.Name.Required", "Product name is required.");
 

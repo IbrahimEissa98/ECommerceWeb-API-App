@@ -1,6 +1,35 @@
-@ECommerceApp.API_HostAddress = http://localhost:5123
+@ECommerceApp.API_HostAddress = https://localhost:7090
+@Host = http://localhost:5123/api/v1
 
-GET {{ECommerceApp.API_HostAddress}}/weatherforecast/
+GET {{Host}}/products/
+Accept: application/json
+
+###
+
+@productId = 17b29278-c36e-4046-8d41-3b48f856f367
+GET {{Host}}/Products/{{productId}}
+Accept: application/json
+
+###
+
+GET {{Host}}/Brands
+Accept: application/json
+
+###
+
+@brandId=1
+GET {{Host}}/Brands/{{brandId}}
+Accept: application/json
+
+###
+
+GET {{Host}}/Types
+Accept: application/json
+
+###
+
+@typeId = 2
+GET {{Host}}/Types/{{typeId}}
 Accept: application/json
 
 ###

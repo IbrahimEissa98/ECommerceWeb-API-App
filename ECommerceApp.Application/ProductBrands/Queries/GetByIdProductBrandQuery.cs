@@ -11,6 +11,9 @@ public class GetByIdBrandQueryHandler(IProductBrandQueryService queryService)
 {
     public async Task<Result<GetByIdProductBrandResponse>> Handle(GetByIdBrandQuery request, CancellationToken cancellationToken)
     {
+        if (request.Id <= 0)
+            return Error.Validation("Brand.Id", "Invalid brand id");
+
         var brand = await queryService.GetByIdAsync(request.Id, cancellationToken);
         return brand is null
             ? Error.NotFound("Brand.NotFound", "Product brand was not found")

@@ -11,6 +11,9 @@ public class GetByIdProductTypeQueryHandler(IProductTypeQueryService queryServic
 {
     public async Task<Result<GetByIdProductTypeResponse>> Handle(GetByIdProductTypeQuery request, CancellationToken cancellationToken)
     {
+        if (request.Id <= 0)
+            return Error.Validation("Type.Id", "Invalid type id");
+
         var type = await queryService.GetByIdAsync(request.Id, cancellationToken);
         return type is null
             ? Error.NotFound("ProductType.NotFound", "Product Type was not found")

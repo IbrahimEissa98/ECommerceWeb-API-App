@@ -1,7 +1,7 @@
 ﻿using Asp.Versioning;
 using ECommerceApp.API.Middlewares;
 
-namespace ECommerceApp.API.Extensions;
+namespace ECommerceApp.API.Common.Extensions;
 
 public static class DependencyInjection
 {
