@@ -12,11 +12,13 @@ public class ProductMappingConfigurations : IRegister
     {
         config.NewConfig<Product, GetAllProductsResponse>()
             .Map(d => d.Brand, s => s.ProductBrand.Name)
-            .Map(d => d.Type, s => s.ProductType.Name);
+            .Map(d => d.Type, s => s.ProductType.Name)
+            .Map(d => d.PicturesUrl, s => s.Images.Select(i => i.Url));
 
         config.NewConfig<Product, GetByIdProductResponse>()
             .Map(d => d.Brand, s => s.ProductBrand.Name)
-            .Map(d => d.Type, s => s.ProductType.Name);
+            .Map(d => d.Type, s => s.ProductType.Name)
+            .Map(d => d.PicturesUrl, s => s.Images.Select(i => i.Url));
 
 
         config.NewConfig<ProductBrand, GetAllProductBrandsResponse>();

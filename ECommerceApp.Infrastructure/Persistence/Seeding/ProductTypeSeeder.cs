@@ -15,6 +15,6 @@ public class ProductTypeSeeder(ECommerceDbContext dbContext) : IDataSeeder
             _dbContext.Types,
             "types.json",
             m => (ProductType.Create(m.Name)).Value!,
-            ct
+            ct: ct
             );
 }

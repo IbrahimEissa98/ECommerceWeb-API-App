@@ -1,4 +1,6 @@
-﻿using ECommerceApp.Application.ProductBrands;
+﻿using CloudinaryDotNet;
+using ECommerceApp.Application.Common.Services;
+using ECommerceApp.Application.ProductBrands;
 using ECommerceApp.Application.Products;
 using ECommerceApp.Application.ProductTypes;
 using ECommerceApp.Domain.Repositories;
@@ -6,11 +8,13 @@ using ECommerceApp.Infrastructure.Persistence.Contexts;
 using ECommerceApp.Infrastructure.Persistence.Interceptors;
 using ECommerceApp.Infrastructure.Persistence.Queries;
 using ECommerceApp.Infrastructure.Persistence.Seeding;
+using ECommerceApp.Infrastructure.Persistence.Storage;
 using ECommerceApp.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace ECommerceApp.Infrastructure.Extensions;
 
@@ -40,6 +44,29 @@ public static class DependencyInjection
         services.AddScoped<IProductQueryService, ProductQueryService>();
         services.AddScoped<IProductBrandQueryService, ProductBrandQueryService>();
         services.AddScoped<IProductTypeQueryService, ProductTypeQueryService>();
+
+        services.Configure<CloudinarySettings>(op =>
+            config.GetSection("CloudinarySettings").Bind(op)
+        );
+
+        //services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+
+        services.AddSingleton(sp =>
+        {
+            var settings = sp
+                .GetRequiredService<IOptions<CloudinarySettings>>()
+                .Value;
+
+            var account = new Account(
+                settings.CloudName,
+                settings.ApiKey,
+                settings.ApiSecret);
+            var cloudinary = new Cloudinary(account);
+            cloudinary.Api.Secure = true;
+            return cloudinary;
+        });
+
+        services.AddScoped<IImageService, CloudinaryImageService>();
 
         return services;
     }

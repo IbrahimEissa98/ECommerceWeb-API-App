@@ -7,7 +7,7 @@ public class Product : BaseEntity<Guid>
 {
     public string Name { get; private set; } = default!;
     public string Description { get; private set; } = default!;
-    public string PictureUrl { get; private set; } = default!;
+    //public string PictureUrl { get; private set; } = default!;
     public decimal Price { get; private set; }
 
     public int BrandId { get; private set; }
@@ -15,6 +15,7 @@ public class Product : BaseEntity<Guid>
 
     public int TypeId { get; private set; }
     public ProductType ProductType { get; private set; } = default!;
+    public ICollection<ProductImage> Images { get; private set; } = [];
 
     private const int NameMaxLength = 100;
     private const int DescriptionMaxLength = 500;
@@ -36,7 +37,6 @@ public class Product : BaseEntity<Guid>
     public static Result<Product> Create(
         string name,
         string description,
-        string pictureUrl,
         decimal price,
         int brandId,
         int typeId)
@@ -53,10 +53,6 @@ public class Product : BaseEntity<Guid>
         if (descriptionResult.IsFailure)
             return Result<Product>.Failure(descriptionResult.Error!);
 
-        var pictureUrlResult = product.SetPictureUrl(pictureUrl);
-        if (pictureUrlResult.IsFailure)
-            return Result<Product>.Failure(pictureUrlResult.Error!);
-
         var priceResult = product.SetPrice(price);
         if (priceResult.IsFailure)
             return Result<Product>.Failure(priceResult.Error!);
@@ -69,13 +65,19 @@ public class Product : BaseEntity<Guid>
         if (typeResult.IsFailure)
             return Result<Product>.Failure(typeResult.Error!);
 
+        //foreach (var image in images)
+        //{
+        //    var imageResult = product.AddImage(image.PublicId, image.IsPrimary, image.DisplayOrder);
+        //    if (imageResult.IsFailure)
+        //        return imageResult.Error!;
+        //}
+
         return Result<Product>.Success(product);
     }
 
     public Result Update(
         string name,
         string description,
-        string pictureUrl,
         decimal price,
         int brandId,
         int typeId)
@@ -87,10 +89,6 @@ public class Product : BaseEntity<Guid>
         var descriptionResult = SetDescription(description);
         if (descriptionResult.IsFailure)
             return descriptionResult;
-
-        var pictureUrlResult = SetPictureUrl(pictureUrl);
-        if (pictureUrlResult.IsFailure)
-            return pictureUrlResult;
 
         var priceResult = SetPrice(price);
         if (priceResult.IsFailure)
@@ -106,11 +104,6 @@ public class Product : BaseEntity<Guid>
     public Result ChangePrice(decimal newPrice)
     {
         return SetPrice(newPrice);
-    }
-
-    public Result ChangePicture(string pictureUrl)
-    {
-        return SetPictureUrl(pictureUrl);
     }
 
     public Result ChangeBrand(int brandId)
@@ -147,17 +140,44 @@ public class Product : BaseEntity<Guid>
         return Result.Success();
     }
 
-    private Result SetPictureUrl(string pictureUrl)
+    public Result AddImage(
+        string publicId,
+        string url,
+        bool isPrimary = false,
+        int displayOrder = 0)
     {
-        var result = ValidatePictureUrl(pictureUrl);
+        var imageResult = ProductImage.Create(
+            Id,
+            publicId,
+            url,
+            isPrimary,
+            displayOrder);
 
-        if (result.IsFailure)
-            return result;
+        if (imageResult.IsFailure)
+            return imageResult;
 
-        PictureUrl = pictureUrl.Trim();
+        if (isPrimary)
+        {
+            foreach (var image in Images)
+                image.RemovePrimary();
+        }
+
+        Images.Add(imageResult.Value);
 
         return Result.Success();
     }
+
+    //private Result SetPictureUrl(string pictureUrl)
+    //{
+    //    var result = ValidatePictureUrl(pictureUrl);
+
+    //    if (result.IsFailure)
+    //        return result;
+
+    //    PictureUrl = pictureUrl.Trim();
+
+    //    return Result.Success();
+    //}
 
     private Result SetPrice(decimal price)
     {

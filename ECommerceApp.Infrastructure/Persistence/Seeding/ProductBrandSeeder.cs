@@ -15,6 +15,6 @@ public class ProductBrandSeeder(ECommerceDbContext dbContext) : IDataSeeder
             _dbContext.Brands,
             "brands.json",
             m => (ProductBrand.Create(m.Name)).Value!,
-            ct
+            ct: ct
             );
 }
