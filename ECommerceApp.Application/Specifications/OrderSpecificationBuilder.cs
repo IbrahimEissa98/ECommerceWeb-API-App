@@ -20,3 +20,20 @@ public sealed class OrderSpecificationBuilder<T>(Specification<T> Specification)
         return this;
     }
 }
+
+public sealed class OrderSpecificationBuilder<T, TResult>(Specification<T, TResult> Specification)
+    : SpecificationBuilder<T>(Specification), IOrderSpecificationBuilder<T, TResult>
+    where T : class
+{
+    public IOrderSpecificationBuilder<T, TResult> ThenBy(Expression<Func<T, object?>> expression)
+    {
+        _specification.AddOrder(new OrderExpressionInfo<T>(expression, OrderType.ThenBy));
+        return this;
+    }
+
+    public IOrderSpecificationBuilder<T, TResult> ThenByDescending(Expression<Func<T, object?>> expression)
+    {
+        _specification.AddOrder(new OrderExpressionInfo<T>(expression, OrderType.ThenByDescending));
+        return this;
+    }
+}

@@ -88,16 +88,16 @@ public class SpecificationBuilder<T, TResult>(Specification<T, TResult> Specific
     //    return IncludeCollectionSpecificationBuilder<T, TElement>(_specification, parent);
     //}
 
-    public IOrderSpecificationBuilder<T> OrderBy(Expression<Func<T, object?>> expression)
+    public IOrderSpecificationBuilder<T, TResult> OrderBy(Expression<Func<T, object?>> expression)
     {
         _builder.OrderBy(expression);
-        return new OrderSpecificationBuilder<T>(_specification);
+        return new OrderSpecificationBuilder<T, TResult>(_specification);
     }
 
-    public IOrderSpecificationBuilder<T> OrderByDescending(Expression<Func<T, object?>> expression)
+    public IOrderSpecificationBuilder<T, TResult> OrderByDescending(Expression<Func<T, object?>> expression)
     {
         _builder.OrderByDescending(expression);
-        return new OrderSpecificationBuilder<T>(_specification);
+        return new OrderSpecificationBuilder<T, TResult>(_specification);
     }
 
     public ISpecificationBuilder<T, TResult> Take(int take)

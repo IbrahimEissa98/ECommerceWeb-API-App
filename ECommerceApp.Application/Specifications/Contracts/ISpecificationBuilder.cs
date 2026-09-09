@@ -29,8 +29,8 @@ public interface ISpecificationBuilder<T, TResult>
     //IIncludeCollectionSpecificationBuilder<T, TElement> Include<TElement>(
     //    Expression<Func<T, ICollection<TElement>>> navigation);
 
-    IOrderSpecificationBuilder<T> OrderBy(Expression<Func<T, object?>> expression);
-    IOrderSpecificationBuilder<T> OrderByDescending(Expression<Func<T, object?>> expression);
+    IOrderSpecificationBuilder<T, TResult> OrderBy(Expression<Func<T, object?>> expression);
+    IOrderSpecificationBuilder<T, TResult> OrderByDescending(Expression<Func<T, object?>> expression);
 
     ISpecificationBuilder<T, TResult> Take(int take);
     ISpecificationBuilder<T, TResult> Skip(int skip);
