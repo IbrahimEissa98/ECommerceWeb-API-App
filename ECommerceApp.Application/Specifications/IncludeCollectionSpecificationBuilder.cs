@@ -14,6 +14,6 @@ public sealed class IncludeCollectionSpecificationBuilder<T, TElement>(
     public IIncludeSpecificationBuilder<T, TNext> ThenInclude<TNext>(Expression<Func<TElement, TNext>> navigation)
     {
         _specification.AddThenInclude(navigation, _parent);
-        return new IncludeSpecificationBuilder<T, TNext>(_specification, _parent);
+        return new IncludeSpecificationBuilder<T, TNext>(_specification, navigation);
     }
 }

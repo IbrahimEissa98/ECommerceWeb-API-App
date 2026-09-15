@@ -14,6 +14,6 @@ public sealed class IncludeSpecificationBuilder<T, TProperty>(
     public IIncludeSpecificationBuilder<T, TNext> ThenInclude<TNext>(Expression<Func<TProperty, TNext>> navigation)
     {
         _specification.AddThenInclude(navigation, _parent);
-        return new IncludeSpecificationBuilder<T, TNext>(_specification, _parent);
+        return new IncludeSpecificationBuilder<T, TNext>(_specification, navigation);
     }
 }
