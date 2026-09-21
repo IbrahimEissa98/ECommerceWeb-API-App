@@ -22,7 +22,7 @@ public sealed class OrderSpecificationBuilder<T>(Specification<T> Specification)
 }
 
 public sealed class OrderSpecificationBuilder<T, TResult>(Specification<T, TResult> Specification)
-    : SpecificationBuilder<T>(Specification), IOrderSpecificationBuilder<T, TResult>
+    : SpecificationBuilder<T, TResult>(Specification), IOrderSpecificationBuilder<T, TResult>
     where T : class
 {
     public IOrderSpecificationBuilder<T, TResult> ThenBy(Expression<Func<T, object?>> expression)

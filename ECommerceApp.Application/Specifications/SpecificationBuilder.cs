@@ -64,7 +64,8 @@ public class SpecificationBuilder<T>(Specification<T> Specification) : ISpecific
     }
 }
 
-public class SpecificationBuilder<T, TResult>(Specification<T, TResult> Specification) : ISpecificationBuilder<T, TResult>
+public class SpecificationBuilder<T, TResult>(Specification<T, TResult> Specification)
+    : ISpecificationBuilder<T, TResult>
     where T : class
 {
     protected readonly Specification<T, TResult> _specification = Specification;

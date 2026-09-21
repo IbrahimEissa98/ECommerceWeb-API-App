@@ -1,13 +1,10 @@
 ﻿namespace ECommerceApp.Application.Products.DTOs;
 
-public class GetByIdProductResponse
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; } = default!;
-    public string Description { get; set; } = default!;
-    public string[] PicturesUrl { get; set; } = [];
-    public decimal Price { get; set; }
-    public string Brand { get; set; } = default!;
-    public string Type { get; set; } = default!;
-
-}
+public record GetByIdProductResponse
+        (Guid Id,
+    string Name,
+    string Description,
+    string[] PicturesUrl,
+    decimal Price,
+    string Brand,
+    string Type);

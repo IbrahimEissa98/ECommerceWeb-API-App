@@ -10,7 +10,7 @@ public interface IOrderSpecificationBuilder<T>
 }
 
 public interface IOrderSpecificationBuilder<T, TResult>
-    : ISpecificationBuilder<T> where T : class
+    : ISpecificationBuilder<T, TResult> where T : class
 {
     IOrderSpecificationBuilder<T, TResult> ThenBy(Expression<Func<T, object?>> expression);
     IOrderSpecificationBuilder<T, TResult> ThenByDescending(Expression<Func<T, object?>> expression);

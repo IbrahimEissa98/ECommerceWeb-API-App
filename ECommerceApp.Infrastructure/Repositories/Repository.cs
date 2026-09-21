@@ -1,6 +1,8 @@
 ﻿using ECommerceApp.Domain.Common;
 using ECommerceApp.Domain.Repositories;
+using ECommerceApp.Domain.Specifications;
 using ECommerceApp.Infrastructure.Persistence.Contexts;
+using ECommerceApp.Infrastructure.Persistence.Specifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.Infrastructure.Repositories;
@@ -24,4 +26,28 @@ public class Repository<TEntity, TKey>(ECommerceDbContext dbContext)
 
     public void Delete(TEntity entity)
         => _dbSet.Remove(entity);
+
+    public async Task<TEntity?> FirstOrDefaultAsync(ISpecification<TEntity> specification, CancellationToken ct = default)
+        => await SpecificationEvaluator.GetQuery(_dbSet, specification).FirstOrDefaultAsync(ct);
+
+    public async Task<TResult?> FirstOrDefaultAsync<TResult>(ISpecification<TEntity, TResult> specification, CancellationToken ct = default)
+        => await SpecificationEvaluator.GetQuery(_dbSet, specification).FirstOrDefaultAsync(ct);
+
+    public async Task<TEntity> SingleAsync(ISpecification<TEntity> specification, CancellationToken ct = default)
+        => await SpecificationEvaluator.GetQuery(_dbSet, specification).SingleAsync(ct);
+
+    public async Task<TResult> SingleAsync<TResult>(ISpecification<TEntity, TResult> specification, CancellationToken ct = default)
+        => await SpecificationEvaluator.GetQuery(_dbSet, specification).SingleAsync(ct);
+
+    public async Task<IReadOnlyList<TEntity>> ToListAsync(ISpecification<TEntity> specification, CancellationToken ct = default)
+        => await SpecificationEvaluator.GetQuery(_dbSet, specification).ToListAsync(ct);
+
+    public async Task<IReadOnlyList<TResult>> ToListAsync<TResult>(ISpecification<TEntity, TResult> specification, CancellationToken ct = default)
+        => await SpecificationEvaluator.GetQuery(_dbSet, specification).ToListAsync(ct);
+
+    public async Task<int> CountAsync(ISpecification<TEntity> specification, CancellationToken ct = default)
+        => await SpecificationEvaluator.GetQuery(_dbSet, specification).CountAsync(ct);
+
+    public async Task<bool> AnyAsync(ISpecification<TEntity> specification, CancellationToken ct = default)
+        => await SpecificationEvaluator.GetQuery(_dbSet, specification).AnyAsync(ct);
 }
