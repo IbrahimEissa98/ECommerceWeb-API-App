@@ -1,13 +1,13 @@
-﻿using ECommerceApp.Application.ProductBrands.DTOs;
+﻿using ECommerceApp.Application.Messaging.Abstractions;
+using ECommerceApp.Application.ProductBrands.DTOs;
 using ECommerceApp.Application.ProductBrands.Specifications;
 using ECommerceApp.Domain.Common;
 using ECommerceApp.Domain.Entities;
 using ECommerceApp.Domain.Repositories;
-using MediatR;
 
 namespace ECommerceApp.Application.ProductBrands.Queries;
 
-public record GetByIdBrandQueryV2(int Id) : IRequest<Result<GetByIdProductBrandResponse>>;
+public record GetByIdBrandQueryV2(int Id) : IQuery<Result<GetByIdProductBrandResponse>>;
 
 public class GetByIdBrandQueryHandlerV2(IReadRepository<ProductBrand, int> repo)
     : IRequestHandler<GetByIdBrandQueryV2, Result<GetByIdProductBrandResponse>>

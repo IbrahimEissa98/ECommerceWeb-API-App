@@ -11,7 +11,6 @@ public class ProductListSpec : Specification<Product, GetAllProductsResponse>
         Query
             .AsNoTracking()
             .OrderBy(p => p.Name)
-
             .Select(p => new GetAllProductsResponse(p.Id, p.Name, p.Description, p.Images.Select(i => i.Url).ToArray(), p.Price, p.ProductBrand.Name, p.ProductType.Name));
     }
 }

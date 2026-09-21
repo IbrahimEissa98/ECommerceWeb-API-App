@@ -1,10 +1,10 @@
-﻿using ECommerceApp.Application.Products.DTOs;
+﻿using ECommerceApp.Application.Messaging.Abstractions;
+using ECommerceApp.Application.Products.DTOs;
 using ECommerceApp.Domain.Common;
-using MediatR;
 
 namespace ECommerceApp.Application.Products.Queries;
 
-public record GetAllProductsQuery() : IRequest<Result<IReadOnlyList<GetAllProductsResponse>>>;
+public record GetAllProductsQuery() : IQuery<Result<IReadOnlyList<GetAllProductsResponse>>>;
 
 public class GetAllProductsHandler(IProductQueryService productQueryService)
     : IRequestHandler<GetAllProductsQuery, Result<IReadOnlyList<GetAllProductsResponse>>>

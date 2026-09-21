@@ -1,4 +1,5 @@
 ﻿using ECommerceApp.Application.Common;
+using ECommerceApp.Application.Messaging;
 using Mapster;
 using MapsterMapper;
 using Microsoft.Extensions.Configuration;
@@ -18,16 +19,18 @@ public static class DependencyInjection
 
         services.AddScoped<IMapper, ServiceMapper>();
 
-        services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            cfg.LicenseKey = config.GetSection("LuckyPenny:LicenseKey").Value;
-        });
+        //services.AddMediatR(cfg =>
+        //{
+        //    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+        //    cfg.LicenseKey = config.GetSection("LuckyPenny:LicenseKey").Value;
+        //});
 
         //services.AddScoped<GetAllProductQuery>();
         //services.AddScoped<GetByIdProductQuery>();
         //services.AddScoped<GetAllProductBrandsQuery>();
         //services.AddScoped<GetAllProductTypesQuery>();
+
+        services.AddMessaging(Assembly.GetExecutingAssembly());
 
         return services;
     }

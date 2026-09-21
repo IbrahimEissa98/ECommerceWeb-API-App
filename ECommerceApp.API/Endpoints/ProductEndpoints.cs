@@ -1,6 +1,6 @@
-﻿using ECommerceApp.Application.Products.DTOs;
+﻿using ECommerceApp.Application.Messaging.Abstractions;
+using ECommerceApp.Application.Products.DTOs;
 using ECommerceApp.Application.Products.Queries;
-using MediatR;
 
 namespace ECommerceApp.API.Endpoints;
 
@@ -15,18 +15,18 @@ public static class ProductEndpoints
             .WithTags("Products");
 
         group.MapGet("/products",
-            async (ISender mediatr, CancellationToken ct) =>
+            async (ISender sender, CancellationToken ct) =>
             {
-                var products = await mediatr.Send(new GetAllProductsQuery(), ct);
+                var products = await sender.Send(new GetAllProductsQuery(), ct);
                 return products.IsSuccess ? Results.Ok(products.Value) : Results.NotFound(products.Error);
             })
             .WithName("GetAllProducts")
             .Produces<IReadOnlyList<GetAllProductsResponse>>(StatusCodes.Status200OK);
 
         group.MapGet("/products/{id:guid}",
-            async (Guid id, ISender mediatr, CancellationToken ct) =>
+            async (Guid id, ISender sender, CancellationToken ct) =>
             {
-                var product = await mediatr.Send(new GetByIdProductQuery(id), ct);
+                var product = await sender.Send(new GetByIdProductQuery(id), ct);
                 return product.IsSuccess ? Results.Ok(product.Value) : Results.NotFound(product.Error);
             })
             .WithName("GetProductById")

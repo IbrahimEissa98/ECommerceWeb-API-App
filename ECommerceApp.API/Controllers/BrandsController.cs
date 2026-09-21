@@ -1,23 +1,23 @@
 ﻿using Asp.Versioning;
 using ECommerceApp.API.Common.Extensions;
 using ECommerceApp.API.Common.Responses;
+using ECommerceApp.Application.Messaging.Abstractions;
 using ECommerceApp.Application.ProductBrands.DTOs;
 using ECommerceApp.Application.ProductBrands.Queries;
 using ECommerceApp.Application.Products.DTOs;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ECommerceApp.API.Controllers;
 
-public class BrandsController(ISender mediatr) : ApiBaseController
+public class BrandsController(ISender sender) : ApiBaseController
 {
     [HttpGet]
     [SwaggerResponse(200, "Brands found", typeof(ApiResponse<GetAllProductsResponse>))]
     [ApiVersion(1, Deprecated = true)]
     public async Task<ActionResult<IReadOnlyList<GetAllProductBrandsResponse>>> ListAll(CancellationToken ct)
     {
-        var result = await mediatr.Send(new GetAllBrandsQuery(), ct);
+        var result = await sender.Send(new GetAllBrandsQuery(), ct);
         return result.ToApiResponse(HttpContext);
     }
 
@@ -28,7 +28,7 @@ public class BrandsController(ISender mediatr) : ApiBaseController
     [ApiVersion(1, Deprecated = true)]
     public async Task<ActionResult<GetByIdProductBrandResponse>> GetById(int id, CancellationToken ct)
     {
-        var result = await mediatr.Send(new GetByIdBrandQuery(id), ct);
+        var result = await sender.Send(new GetByIdBrandQuery(id), ct);
         return result.ToApiResponse(HttpContext);
     }
 
@@ -37,7 +37,7 @@ public class BrandsController(ISender mediatr) : ApiBaseController
     [ApiVersion(2)]
     public async Task<ActionResult<IReadOnlyList<GetAllProductBrandsResponse>>> ListAll_V2(CancellationToken ct)
     {
-        var result = await mediatr.Send(new GetAllBrandsQueryV2(), ct);
+        var result = await sender.Send(new GetAllBrandsQueryV2(), ct);
         return result.ToApiResponse(HttpContext);
     }
 
@@ -48,7 +48,7 @@ public class BrandsController(ISender mediatr) : ApiBaseController
     [ApiVersion(2)]
     public async Task<ActionResult<GetByIdProductBrandResponse>> GetById_V2(int id, CancellationToken ct)
     {
-        var result = await mediatr.Send(new GetByIdBrandQueryV2(id), ct);
+        var result = await sender.Send(new GetByIdBrandQueryV2(id), ct);
         return result.ToApiResponse(HttpContext);
     }
 }

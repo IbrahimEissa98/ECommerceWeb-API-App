@@ -1,11 +1,11 @@
-﻿using ECommerceApp.Application.Products.DTOs;
+﻿using ECommerceApp.Application.Messaging.Abstractions;
+using ECommerceApp.Application.Products.DTOs;
 using ECommerceApp.Domain.Common;
 using ECommerceApp.Domain.Errors;
-using MediatR;
 
 namespace ECommerceApp.Application.Products.Queries;
 
-public record GetByIdProductQuery(Guid Id) : IRequest<Result<GetByIdProductResponse>>;
+public record GetByIdProductQuery(Guid Id) : IQuery<Result<GetByIdProductResponse>>;
 
 public class GetByIdProductHandler(IProductQueryService queryService)
     : IRequestHandler<GetByIdProductQuery, Result<GetByIdProductResponse>>

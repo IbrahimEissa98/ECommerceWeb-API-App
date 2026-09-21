@@ -1,13 +1,13 @@
-﻿using ECommerceApp.Application.ProductTypes.DTOs;
+﻿using ECommerceApp.Application.Messaging.Abstractions;
+using ECommerceApp.Application.ProductTypes.DTOs;
 using ECommerceApp.Application.ProductTypes.Specifications;
 using ECommerceApp.Domain.Common;
 using ECommerceApp.Domain.Entities;
 using ECommerceApp.Domain.Repositories;
-using MediatR;
 
 namespace ECommerceApp.Application.ProductTypes.Queries;
 
-public record GetAllProductTypesQueryV2 : IRequest<Result<IReadOnlyList<GetAllProductTypesResponse>>>;
+public record GetAllProductTypesQueryV2 : IQuery<Result<IReadOnlyList<GetAllProductTypesResponse>>>;
 
 public class GetAllProductTypesQueryHandlerV2(IReadRepository<ProductType, int> repo)
     : IRequestHandler<GetAllProductTypesQueryV2, Result<IReadOnlyList<GetAllProductTypesResponse>>>
