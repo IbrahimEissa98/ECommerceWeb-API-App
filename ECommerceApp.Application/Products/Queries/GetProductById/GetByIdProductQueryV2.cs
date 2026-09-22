@@ -6,7 +6,7 @@ using ECommerceApp.Domain.Entities;
 using ECommerceApp.Domain.Errors;
 using ECommerceApp.Domain.Repositories;
 
-namespace ECommerceApp.Application.Products.Queries;
+namespace ECommerceApp.Application.Products.Queries.GetProductById;
 
 public record GetByIdProductQueryV2(Guid Id) : IQuery<Result<GetByIdProductResponse>>;
 

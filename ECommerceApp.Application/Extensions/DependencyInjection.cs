@@ -1,5 +1,7 @@
 ﻿using ECommerceApp.Application.Common;
 using ECommerceApp.Application.Messaging;
+using ECommerceApp.Application.Products.Queries.GetPagedProducts;
+using FluentValidation;
 using Mapster;
 using MapsterMapper;
 using Microsoft.Extensions.Configuration;
@@ -31,6 +33,8 @@ public static class DependencyInjection
         //services.AddScoped<GetAllProductTypesQuery>();
 
         services.AddMessaging(Assembly.GetExecutingAssembly());
+
+        services.AddValidatorsFromAssembly(typeof(GetPagedProductsQueryValidator).Assembly);
 
         return services;
     }

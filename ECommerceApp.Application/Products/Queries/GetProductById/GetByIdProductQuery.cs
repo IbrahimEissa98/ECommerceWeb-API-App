@@ -3,7 +3,7 @@ using ECommerceApp.Application.Products.DTOs;
 using ECommerceApp.Domain.Common;
 using ECommerceApp.Domain.Errors;
 
-namespace ECommerceApp.Application.Products.Queries;
+namespace ECommerceApp.Application.Products.Queries.GetProductById;
 
 public record GetByIdProductQuery(Guid Id) : IQuery<Result<GetByIdProductResponse>>;
 

@@ -1,6 +1,7 @@
 ﻿using ECommerceApp.Application.Messaging.Abstractions;
 using ECommerceApp.Application.Products.DTOs;
-using ECommerceApp.Application.Products.Queries;
+using ECommerceApp.Application.Products.Queries.GetAllProducts;
+using ECommerceApp.Application.Products.Queries.GetProductById;
 
 namespace ECommerceApp.API.Endpoints;
 

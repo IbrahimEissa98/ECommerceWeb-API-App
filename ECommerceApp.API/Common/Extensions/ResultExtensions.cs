@@ -1,5 +1,6 @@
 ﻿using ECommerceApp.API.Common.Responses;
 using ECommerceApp.Domain.Common;
+using ECommerceApp.Domain.Repositories;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +8,7 @@ namespace ECommerceApp.API.Common.Extensions;
 
 public static class ResultExtensions
 {
-    public static ActionResult<T> ToApiResponse<T>(this Result<T> result, HttpContext httpContext, PaginationMeta? pagination = null)
+    public static ActionResult<T> ToApiResponse<T>(this Result<T> result, HttpContext httpContext)
     {
         if (result.IsSuccess)
         {
@@ -19,7 +20,7 @@ public static class ResultExtensions
                     MetaData = new ApiMeta
                     {
                         TraceId = httpContext.TraceIdentifier,
-                        Pagination = pagination
+                        Pagination = null
                     }
                 });
         }
@@ -84,6 +85,53 @@ public static class ResultExtensions
         //        MetaData = new ApiMeta { TraceId = httpContext.TraceIdentifier, Pagination = pagination }
         //    })
         //{ StatusCode = MapStatusCode(error!.ErrorType) };
+    }
+
+    public static ActionResult<IReadOnlyList<T>> ToApiResponse<T>(this Result<PagedResult<T>> result, HttpContext httpContext, PaginationMeta? pagination = null)
+    {
+        if (result.IsSuccess)
+        {
+            return new OkObjectResult(
+                new ApiResponse<IReadOnlyList<T>>
+                {
+                    Success = true,
+                    Data = result.Value.Items,
+                    MetaData = new ApiMeta
+                    {
+                        TraceId = httpContext.TraceIdentifier,
+                        Pagination = pagination
+                    }
+                });
+        }
+
+        var error = result.Error;
+
+        var problem = new ProblemApiResponse
+        {
+            Type = "https://tools.ietf.org/html/rfc9110#section-15.5.1",
+            Title = MapTitle(error!.ErrorType),
+            Status = MapStatusCode(error!.ErrorType)
+        };
+
+        if (error.ErrorType is ErrorType.Validation)
+        {
+            problem.Errors = new Dictionary<string, string[]>
+            {
+                [error.Code] = [error.Message]
+            };
+        }
+        else
+        {
+            problem.Details = error.Message;
+        }
+
+        problem.TraceId = httpContext.TraceIdentifier;
+        problem.Instance = httpContext.Request.GetDisplayUrl();
+
+        return new ObjectResult(problem)
+        {
+            StatusCode = MapStatusCode(error!.ErrorType)
+        };
     }
 
     public static ActionResult ToApiResponse(this Result result, HttpContext httpContext)

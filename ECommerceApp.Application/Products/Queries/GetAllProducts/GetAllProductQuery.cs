@@ -2,7 +2,7 @@
 using ECommerceApp.Application.Products.DTOs;
 using ECommerceApp.Domain.Common;
 
-namespace ECommerceApp.Application.Products.Queries;
+namespace ECommerceApp.Application.Products.Queries.GetAllProducts;
 
 public record GetAllProductsQuery() : IQuery<Result<IReadOnlyList<GetAllProductsResponse>>>;
 

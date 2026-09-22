@@ -5,7 +5,7 @@ using ECommerceApp.Domain.Common;
 using ECommerceApp.Domain.Entities;
 using ECommerceApp.Domain.Repositories;
 
-namespace ECommerceApp.Application.Products.Queries;
+namespace ECommerceApp.Application.Products.Queries.GetAllProducts;
 
 public record GetAllProductsQueryV2() : IQuery<Result<IReadOnlyList<GetAllProductsResponse>>>;
 

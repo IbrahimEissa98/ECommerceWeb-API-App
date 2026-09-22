@@ -3,7 +3,9 @@ using ECommerceApp.API.Common.Extensions;
 using ECommerceApp.API.Common.Responses;
 using ECommerceApp.Application.Messaging.Abstractions;
 using ECommerceApp.Application.Products.DTOs;
-using ECommerceApp.Application.Products.Queries;
+using ECommerceApp.Application.Products.Queries.GetAllProducts;
+using ECommerceApp.Application.Products.Queries.GetPagedProducts;
+using ECommerceApp.Application.Products.Queries.GetProductById;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -36,13 +38,23 @@ public class ProductsController(ISender sender) : ApiBaseController
         //    error => NotFound(error.Message));
     }
 
+    //[HttpGet]
+    //[SwaggerResponse(200, "Products found", typeof(ApiResponse<GetAllProductsResponse>))]
+    //[ApiVersion(2)]
+    //public async Task<ActionResult<IReadOnlyList<GetAllProductsResponse>>> ListAll_V2(CancellationToken ct)
+    //{
+    //    var result = await sender.Send(new GetAllProductsQueryV2(), ct);
+    //    return result.ToApiResponse(HttpContext);
+    //}
+
     [HttpGet]
     [SwaggerResponse(200, "Products found", typeof(ApiResponse<GetAllProductsResponse>))]
     [ApiVersion(2)]
-    public async Task<ActionResult<IReadOnlyList<GetAllProductsResponse>>> ListAll_V2(CancellationToken ct)
+    public async Task<ActionResult<IReadOnlyList<GetAllProductsResponse>>> ListAllPaged_V2(
+        [FromQuery] GetPagedProductsQuery query, CancellationToken ct)
     {
-        var result = await sender.Send(new GetAllProductsQueryV2(), ct);
-        return result.ToApiResponse(HttpContext);
+        var result = await sender.Send(query, ct);
+        return result.ToApiResponse(HttpContext, new PaginationMeta(query.PageNumber, query.PageSize, result.Value.TotalCount));
     }
 
     [HttpGet("{id}")]
