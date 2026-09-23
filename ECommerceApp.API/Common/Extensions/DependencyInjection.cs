@@ -29,6 +29,15 @@ public static class DependencyInjection
             .AddMvc()
             .AddOpenApi();
 
+        services.AddOutputCache(op =>
+        {
+            op.AddPolicy("Products", pb =>
+            {
+                pb.Expire(TimeSpan.FromSeconds(30))
+                .SetVaryByQuery("pageNumber", "pageSize", "brandId", "typeId", "sortBy", "search", "sortAscending");
+            });
+        });
+
         return services;
     }
 }

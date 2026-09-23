@@ -7,6 +7,7 @@ using ECommerceApp.Application.Products.Queries.GetAllProducts;
 using ECommerceApp.Application.Products.Queries.GetPagedProducts;
 using ECommerceApp.Application.Products.Queries.GetProductById;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace ECommerceApp.API.Controllers;
@@ -14,6 +15,7 @@ namespace ECommerceApp.API.Controllers;
 public class ProductsController(ISender sender) : ApiBaseController
 {
     [HttpGet]
+    [OutputCache(Duration = 30, Tags = ["Products"])]
     [SwaggerResponse(200, "Products found", typeof(ApiResponse<GetAllProductsResponse>))]
     [ApiVersion(1, Deprecated = true)]
     public async Task<ActionResult<IReadOnlyList<GetAllProductsResponse>>> ListAll(CancellationToken ct)
@@ -48,6 +50,7 @@ public class ProductsController(ISender sender) : ApiBaseController
     //}
 
     [HttpGet]
+    [OutputCache(Duration = 30, Tags = ["Products"], PolicyName = "Products")]
     [SwaggerResponse(200, "Products found", typeof(ApiResponse<GetAllProductsResponse>))]
     [ApiVersion(2)]
     public async Task<ActionResult<IReadOnlyList<GetAllProductsResponse>>> ListAllPaged_V2(

@@ -27,6 +27,8 @@ var app = builder.Build();
 
 app.UseExceptionHandler();
 
+app.UseOutputCache();
+
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 
