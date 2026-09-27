@@ -1,6 +1,5 @@
 ﻿using ECommerceApp.API.Common.Responses;
 using ECommerceApp.Domain.Common;
-using ECommerceApp.Domain.Repositories;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 

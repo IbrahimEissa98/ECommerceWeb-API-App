@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDIForApi();
 builder.Services.AddDIForInfrastructure(builder.Configuration);
 builder.Services.AddDIForApplication(builder.Configuration);
+builder.Services.AddBasketCache(builder.Configuration);
 
 if (builder.Environment.IsDevelopment())
 {

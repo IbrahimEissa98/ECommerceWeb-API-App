@@ -4,6 +4,7 @@ using ECommerceApp.Application.ProductBrands;
 using ECommerceApp.Application.Products;
 using ECommerceApp.Application.ProductTypes;
 using ECommerceApp.Domain.Repositories;
+using ECommerceApp.Infrastructure.Caching;
 using ECommerceApp.Infrastructure.Persistence.Contexts;
 using ECommerceApp.Infrastructure.Persistence.Interceptors;
 using ECommerceApp.Infrastructure.Persistence.Queries;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+//using Microsoft.Extensions.Options;
 
 namespace ECommerceApp.Infrastructure.Extensions;
 
@@ -69,6 +71,32 @@ public static class DependencyInjection
 
         services.AddScoped<IImageService, CloudinaryImageService>();
 
+        services.AddBasketCache(config);
+
         return services;
     }
+
+    private static IServiceCollection AddBasketCache(this IServiceCollection services, IConfiguration config)
+    {
+        services
+            .AddOptions<CacheEntryPolicy>("Basket")
+            .Bind(config.GetSection("CachedAggregates:Basket"))
+            .ValidateOnStart();
+
+        services.AddSingleton<IValidateOptions<CacheEntryPolicy>, CacheEntryPolicyValidator>();
+
+        var redisConnection = config.GetConnectionString("Redis");
+        if (!string.IsNullOrWhiteSpace(redisConnection))
+        {
+            services.AddStackExchangeRedisCache(op => op.Configuration =  redisConnection);
+        }
+
+        services.AddHybridCache();
+
+        services.AddScoped(typeof(ICachedAggregateStore<>), typeof(HybridCacheAggregateStore<>));
+        services.AddScoped<IBasketStore, HybridBasketStore>();
+
+        return services;
+    }
+
 }
